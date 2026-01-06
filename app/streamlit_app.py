@@ -226,7 +226,7 @@ def main():
         # Prediction button
         col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
         with col_btn2:
-            predict_button = st.button("🔮 DỰ ĐOÁN GIÁ NHÀ", use_container_width=True, type="primary")
+            predict_button = st.button("🔮 DỰ ĐOÁN GIÁ NHÀ", width='stretch', type="primary")
         
         if predict_button:
             # Prepare input data
@@ -345,7 +345,7 @@ def main():
             barmode='group',
             height=400
         )
-        st.plotly_chart(fig1, use_container_width=True)
+        st.plotly_chart(fig1, width='stretch')
         
         st.markdown("---")
         
@@ -367,7 +367,7 @@ def main():
             color_continuous_scale='Viridis'
         )
         fig2.update_layout(height=400)
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width='stretch')
         
         st.markdown("---")
         
@@ -394,7 +394,7 @@ def main():
                 color_continuous_scale='Blues'
             )
             fig3.update_layout(height=350)
-            st.plotly_chart(fig3, use_container_width=True)
+            st.plotly_chart(fig3, width='stretch')
         
         with col_chart2:
             fig4 = px.bar(
@@ -406,9 +406,9 @@ def main():
                 color_continuous_scale='Reds'
             )
             fig4.update_layout(height=350)
-            st.plotly_chart(fig4, use_container_width=True)
+            st.plotly_chart(fig4, width='stretch')
         
-        st.dataframe(models_comparison, use_container_width=True)
+        st.dataframe(models_comparison, width='stretch')
     
     # Tab 3: Guide
     with tab3:
