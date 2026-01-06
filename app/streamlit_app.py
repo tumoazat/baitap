@@ -489,7 +489,7 @@ def main():
         
         - **GitHub**: [Vietnam Housing Prediction](https://github.com/)
         - **Email**: support@example.com
-        - **Dataset**: [Kaggle - Vietnam Housing Dataset](https://www.kaggle.com/)
+        - **Dataset**: [Kaggle - Vietnam Housing Dataset](https://www.kaggle.com/code/tungbtt/gi-thu-nh-h-n-i-data-tableau-insights/notebook)
         
         ### 📜 License
         
