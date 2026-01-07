@@ -80,45 +80,72 @@ def load_sample_data():
     
     df = pd.read_csv(data_path)
     
-    # Rename English columns to Vietnamese for consistency with the rest of the app
-    column_mapping = {
-        'Address': 'Địa chỉ',
-        'Area': 'Diện tích',
-        'Frontage': 'Dài',
-        'Access Road': 'Rộng',
-        'House direction': 'Hướng nhà',
-        'Balcony direction': 'Hướng ban công',
-        'Floors': 'Số tầng',
-        'Bedrooms': 'Số phòng ngủ',
-        'Bathrooms': 'Số phòng tắm',
-        'Legal status': 'Giấy tờ pháp lý',
-        'Furniture state': 'Tình trạng nội thất',
-        'Price': 'Giá'
-    }
+    # Clean numeric columns that might have units or formatting
+    def clean_numeric(val):
+        """Clean numeric values by removing units and converting to float."""
+        if pd.isna(val):
+            return np.nan
+        val_str = str(val).replace(' ', '').replace(',', '.')
+        # Extract only digits and dots
+        import re
+        # Remove all non-digit and non-dot characters
+        val_str = re.sub(r'[^\d.]', '', val_str)
+        # Handle multiple dots - keep only the last one as decimal separator
+        parts = val_str.split('.')
+        if len(parts) > 2:
+            # Join all parts except the last, then add decimal point and last part
+            val_str = ''.join(parts[:-1]) + '.' + parts[-1]
+        elif len(parts) == 2 and parts[1] == '':
+            # If ends with dot, remove it
+            val_str = parts[0]
+        
+        try:
+            return float(val_str) if val_str else np.nan
+        except ValueError:
+            return np.nan
     
-    df = df.rename(columns=column_mapping)
+    # Clean Diện tích (Area)
+    if 'Diện tích' in df.columns:
+        df['Diện tích'] = df['Diện tích'].apply(clean_numeric)
     
-    # Extract district/province from address
-    def extract_district(address):
-        if pd.isna(address):
-            return 'Khác'
-        # Try to extract district from address
-        address = str(address)
-        districts = ['Ba Đình', 'Hoàn Kiếm', 'Đống Đa', 'Hai Bà Trưng', 'Cầu Giấy', 
-                    'Thanh Xuân', 'Tây Hồ', 'Long Biên', 'Hoàng Mai', 'Nam Từ Liêm']
-        for district in districts:
-            if district in address:
-                return district
-        return 'Khác'
+    # Clean Giá/m2 (Price per m²) - convert from triệu (millions) to full value
+    if 'Giá/m2' in df.columns:
+        df['Giá_m2'] = df['Giá/m2'].apply(clean_numeric)
+        
+        # Calculate total price: Diện tích * Giá/m2 * 1,000,000 (convert from triệu to VND)
+        df['Giá'] = df['Diện tích'] * df['Giá_m2'] * 1e6
+    elif 'Giá' not in df.columns:
+        st.error("Dataset must have either 'Giá' or 'Giá/m2' column.")
+        st.stop()
     
-    df['Quận'] = df['Địa chỉ'].apply(extract_district)
+    # Clean Số phòng ngủ (Bedrooms)
+    if 'Số phòng ngủ' in df.columns:
+        df['Số phòng ngủ'] = df['Số phòng ngủ'].apply(clean_numeric)
     
-    # Add property type if not exists
-    if 'Loại hình nhà ở' not in df.columns:
+    # Clean Số tầng (Floors)
+    if 'Số tầng' in df.columns:
+        df['Số tầng'] = df['Số tầng'].apply(clean_numeric)
+    
+    # Fill missing Quận with 'Khác'
+    if 'Quận' in df.columns:
+        df['Quận'] = df['Quận'].fillna('Khác')
+        # Clean Quận names
+        df['Quận'] = df['Quận'].str.replace('Quận ', '', regex=False)
+    else:
+        df['Quận'] = 'Khác'
+    
+    # Fill missing Loại hình nhà ở
+    if 'Loại hình nhà ở' in df.columns:
+        df['Loại hình nhà ở'] = df['Loại hình nhà ở'].fillna('Nhà riêng')
+    else:
         df['Loại hình nhà ở'] = 'Nhà riêng'
     
-    # Convert price to billions (tỷ)
-    df['Giá'] = df['Giá'] * 1e9
+    # Remove rows with missing critical values
+    df = df.dropna(subset=['Giá', 'Diện tích'])
+    
+    # Remove outliers (prices too high or too low)
+    df = df[(df['Giá'] > 0) & (df['Giá'] < 500e9)]  # Less than 500 billion
+    df = df[(df['Diện tích'] > 0) & (df['Diện tích'] < 1000)]  # Less than 1000 m²
     
     return df
 
