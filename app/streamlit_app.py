@@ -60,40 +60,10 @@ st.markdown("""
 
 
 def load_sample_data():
-    """Load or create sample data for demonstration."""
-    # Create sample data for demo purposes
-    np.random.seed(42)
-    n_samples = 1000
-    
-    districts = ['Ba Đình', 'Hoàn Kiếm', 'Đống Đa', 'Hai Bà Trưng', 'Cầu Giấy', 
-                'Thanh Xuân', 'Tây Hồ', 'Long Biên', 'Hoàng Mai', 'Nam Từ Liêm']
-    property_types = ['Nhà riêng', 'Nhà mặt phố', 'Nhà ngõ, hẻm', 'Biệt thự', 'Nhà phố liền kề']
-    legal_docs = ['Sổ đỏ/ Sổ hồng', 'Hợp đồng mua bán', 'Giấy tờ khác']
-    
-    data = {
-        'Quận': np.random.choice(districts, n_samples),
-        'Loại hình nhà ở': np.random.choice(property_types, n_samples),
-        'Diện tích': np.random.uniform(30, 200, n_samples),
-        'Số tầng': np.random.randint(1, 6, n_samples),
-        'Số phòng ngủ': np.random.randint(1, 6, n_samples),
-        'Dài': np.random.uniform(3, 20, n_samples),
-        'Rộng': np.random.uniform(3, 15, n_samples),
-        'Giấy tờ pháp lý': np.random.choice(legal_docs, n_samples)
-    }
-    
-    df = pd.DataFrame(data)
-    
-    # Calculate price based on features (simplified model)
-    base_prices = {
-        'Ba Đình': 150e6, 'Hoàn Kiếm': 200e6, 'Đống Đa': 120e6,
-        'Hai Bà Trưng': 130e6, 'Cầu Giấy': 140e6, 'Thanh Xuân': 110e6,
-        'Tây Hồ': 160e6, 'Long Biên': 90e6, 'Hoàng Mai': 85e6, 'Nam Từ Liêm': 100e6
-    }
-    
-    df['Giá'] = df.apply(lambda row: 
-        base_prices.get(row['Quận'], 100e6) * row['Diện tích'] * 
-        (1 + row['Số tầng'] * 0.05) * (1 + row['Số phòng ngủ'] * 0.03) *
-        np.random.uniform(0.9, 1.1), axis=1)
+    """Load housing data from CSV file."""
+    # Load data from CSV file
+    data_path = Path(__file__).parent.parent / 'data' / 'vietnam_housing_dataset.csv'
+    df = pd.read_csv(data_path)
     
     return df
 
