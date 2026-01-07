@@ -100,11 +100,11 @@ This project aims to predict housing prices in Hanoi based on various property f
 
 To use real data:
 
-1. Download the dataset from Kaggle: [Vietnam Housing Dataset](https://www.kaggle.com/)
-2. Save it as `data/vietnam_housing.csv`
-3. Run the preprocessing notebook
+1. Download the dataset from Kaggle: [Vietnam Housing Dataset](https://www.kaggle.com/datasets/ladcva/vietnam-housing-dataset-hanoi/data)
+2. Save it as `data/vietnam_housing_dataset.csv`
+3. Or run: `python download_dataset.py` to download automatically
 
-**Note**: The project includes sample data generation for demonstration purposes if the real dataset is not available.
+**Note**: The project currently uses the real Vietnam housing dataset with 30,000+ records.
 
 ## 🚀 Installation
 

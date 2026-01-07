@@ -79,6 +79,47 @@ def load_sample_data():
         st.stop()
     
     df = pd.read_csv(data_path)
+    
+    # Rename English columns to Vietnamese for consistency with the rest of the app
+    column_mapping = {
+        'Address': 'Địa chỉ',
+        'Area': 'Diện tích',
+        'Frontage': 'Dài',
+        'Access Road': 'Rộng',
+        'House direction': 'Hướng nhà',
+        'Balcony direction': 'Hướng ban công',
+        'Floors': 'Số tầng',
+        'Bedrooms': 'Số phòng ngủ',
+        'Bathrooms': 'Số phòng tắm',
+        'Legal status': 'Giấy tờ pháp lý',
+        'Furniture state': 'Tình trạng nội thất',
+        'Price': 'Giá'
+    }
+    
+    df = df.rename(columns=column_mapping)
+    
+    # Extract district/province from address
+    def extract_district(address):
+        if pd.isna(address):
+            return 'Khác'
+        # Try to extract district from address
+        address = str(address)
+        districts = ['Ba Đình', 'Hoàn Kiếm', 'Đống Đa', 'Hai Bà Trưng', 'Cầu Giấy', 
+                    'Thanh Xuân', 'Tây Hồ', 'Long Biên', 'Hoàng Mai', 'Nam Từ Liêm']
+        for district in districts:
+            if district in address:
+                return district
+        return 'Khác'
+    
+    df['Quận'] = df['Địa chỉ'].apply(extract_district)
+    
+    # Add property type if not exists
+    if 'Loại hình nhà ở' not in df.columns:
+        df['Loại hình nhà ở'] = 'Nhà riêng'
+    
+    # Convert price to billions (tỷ)
+    df['Giá'] = df['Giá'] * 1e9
+    
     return df
 
 
