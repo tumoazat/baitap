@@ -63,7 +63,21 @@ def load_sample_data():
     """Load housing data from CSV file."""
     # Load data from CSV file
     data_path = Path(__file__).parent.parent / 'data' / 'vietnam_housing_dataset.csv'
-    df = pd.read_csv(data_path)
+    
+    # Try different path variations if file not found
+    if not data_path.exists():
+        # Try absolute path
+        data_path = Path('data/vietnam_housing_dataset.csv')
+    
+    if not data_path.exists():
+        # Try from current directory
+        data_path = Path('../data/vietnam_housing_dataset.csv')
+    
+    if data_path.exists():
+        df = pd.read_csv(data_path)
+    else:
+        st.error(f"Dataset file not found at {data_path}")
+        st.stop()
     
     return df
 
