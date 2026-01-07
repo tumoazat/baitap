@@ -194,7 +194,7 @@ def main():
     st.markdown('<p class="sub-header">Ứng dụng Machine Learning dự đoán giá bất động sản</p>', unsafe_allow_html=True)
     
     # Create tabs
-    tab1, tab2, tab3 = st.tabs(["📊 Dự Đoán Giá", "📈 Phân Tích", "📖 Hướng Dẫn"])
+    tab1, tab2 = st.tabs(["📊 Dự Đoán Giá", "📈 Phân Tích"])
     
     # Tab 1: Prediction
     with tab1:
@@ -461,98 +461,6 @@ def main():
             st.plotly_chart(fig4, width='stretch')
         
         st.dataframe(models_comparison, width='stretch')
-    
-    # Tab 3: Guide
-    with tab3:
-        st.header("📖 Hướng Dẫn Sử Dụng")
-        
-        st.markdown("""
-        ## Chào mừng đến với ứng dụng Dự đoán Giá Nhà Hà Nội! 🏠
-        
-        ### 🎯 Giới thiệu
-        
-        Ứng dụng này sử dụng **Machine Learning** để dự đoán giá nhà tại Hà Nội dựa trên các 
-        đặc điểm của bất động sản. Mô hình được huấn luyện trên dữ liệu thực tế từ thị trường 
-        bất động sản Việt Nam.
-        
-        ### 📝 Cách sử dụng
-        
-        1. **Tab "Dự Đoán Giá"**:
-           - Nhập các thông tin về ngôi nhà
-           - Nhấn nút "DỰ ĐOÁN GIÁ NHÀ"
-           - Xem kết quả dự đoán và các chỉ số liên quan
-        
-        2. **Tab "Phân Tích"**:
-           - Xem thống kê tổng quan về thị trường
-           - So sánh giá nhà theo quận và loại hình
-           - Đánh giá hiệu suất các mô hình ML
-        
-        3. **Tab "Hướng Dẫn"**:
-           - Đọc hướng dẫn sử dụng
-           - Tìm hiểu về các yếu tố ảnh hưởng giá nhà
-        
-        ### 🔍 Các yếu tố ảnh hưởng đến giá nhà
-        
-        **Yếu tố chính:**
-        - 📍 **Vị trí**: Quận/huyện là yếu tố quan trọng nhất
-        - 📏 **Diện tích**: Diện tích đất và diện tích sàn
-        - 🏢 **Loại hình**: Nhà riêng, mặt phố, biệt thự, etc.
-        - 🏗️ **Số tầng**: Nhiều tầng thường có giá cao hơn
-        - 🛏️ **Số phòng ngủ**: Ảnh hưởng đến công năng sử dụng
-        - 📄 **Giấy tờ pháp lý**: Sổ đỏ/hồng có giá trị cao nhất
-        
-        **Yếu tố phụ:**
-        - Chiều dài và chiều rộng mặt tiền
-        - Tình trạng nhà (mới/cũ)
-        - Hướng nhà
-        - Khoảng cách đến trung tâm
-        
-        ### 🤖 Công nghệ sử dụng
-        
-        **Machine Learning Models:**
-        - 📊 Linear Regression (Baseline)
-        - 🌲 Random Forest Regressor
-        - 🚀 XGBoost Regressor
-        - ⚡ LightGBM (Best Performance)
-        
-        **Tech Stack:**
-        - Python 3.8+
-        - Scikit-learn
-        - XGBoost & LightGBM
-        - Streamlit
-        - Pandas & NumPy
-        - Plotly
-        
-        ### 📊 Độ chính xác
-        
-        Mô hình tốt nhất (LightGBM) đạt được:
-        - **R² Score**: 0.93
-        - **MAE**: ~465 triệu VNĐ
-        - **MAPE**: ~7.1%
-        
-        ### ⚠️ Lưu ý quan trọng
-        
-        - Giá dự đoán chỉ mang tính **tham khảo**
-        - Giá thực tế phụ thuộc nhiều yếu tố khác không có trong mô hình
-        - Nên tham khảo thêm từ các nguồn khác
-        - Tham khảo ý kiến chuyên gia bất động sản trước khi quyết định
-        
-        ### 📧 Liên hệ & Hỗ trợ
-        
-        - **GitHub**: [Vietnam Housing Prediction](https://github.com/)
-        - **Email**: support@example.com
-        - **Dataset**: [Kaggle - Vietnam Housing Dataset](https://www.kaggle.com/code/tungbtt/gi-thu-nh-h-n-i-data-tableau-insights/notebook)
-        
-        ### 📜 License
-        
-        MIT License - Dự án mã nguồn mở
-        
-        ---
-        
-        Phát triển bởi **Vietnam Housing Team** 🇻🇳
-        """)
-        
-        st.success("💡 Tip: Thử nghiệm với các tham số khác nhau để xem giá thay đổi như thế nào!")
 
 
 if __name__ == "__main__":
