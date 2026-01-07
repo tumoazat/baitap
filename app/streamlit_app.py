@@ -61,24 +61,24 @@ st.markdown("""
 
 def load_sample_data():
     """Load housing data from CSV file."""
-    # Load data from CSV file
-    data_path = Path(__file__).parent.parent / 'data' / 'vietnam_housing_dataset.csv'
+    # Try multiple path variations
+    possible_paths = [
+        Path(__file__).parent.parent / 'data' / 'vietnam_housing_dataset.csv',  # Relative to script location
+        Path('data/vietnam_housing_dataset.csv'),  # From project root
+        Path('./data/vietnam_housing_dataset.csv'),  # Current directory
+    ]
     
-    # Try different path variations if file not found
-    if not data_path.exists():
-        # Try absolute path
-        data_path = Path('data/vietnam_housing_dataset.csv')
+    data_path = None
+    for path in possible_paths:
+        if path.exists():
+            data_path = path
+            break
     
-    if not data_path.exists():
-        # Try from current directory
-        data_path = Path('../data/vietnam_housing_dataset.csv')
-    
-    if data_path.exists():
-        df = pd.read_csv(data_path)
-    else:
-        st.error(f"Dataset file not found at {data_path}")
+    if data_path is None:
+        st.error("Dataset file not found. Please ensure 'vietnam_housing_dataset.csv' is in the 'data' folder.")
         st.stop()
     
+    df = pd.read_csv(data_path)
     return df
 
 
